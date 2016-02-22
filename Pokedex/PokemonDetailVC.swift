@@ -24,6 +24,7 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet weak var imgCurrentEvo: UIImageView!
     @IBOutlet weak var imgNextEvo: UIImageView!
     @IBOutlet weak var lblEvolution: UILabel!
+    @IBOutlet weak var spnDownloading: UIActivityIndicatorView!
     
     
     //Variables
@@ -40,11 +41,13 @@ class PokemonDetailVC: UIViewController {
         let img = UIImage(named: "\(pokemon.pokedexId)")
         imgMain.image = img
         imgCurrentEvo.image = img
-
+        
+        self.spnDownloading.startAnimating()
         
         pokemon.downloadPokemonDetails { () -> () in
             //this will be called after download is done
             self.updateUI()
+            self.spnDownloading.stopAnimating()
         }
     }
     
@@ -65,7 +68,7 @@ class PokemonDetailVC: UIViewController {
             imgNextEvo.image = UIImage(named: pokemon.nextEvolutionId)
             var str = "Next Evolution: \(pokemon.nextEvolutionTxt)"
             if pokemon.nextEvolutionLvl != "" {
-                str += "- LVL \(pokemon.nextEvolutionLvl)"
+                str += " - LVL \(pokemon.nextEvolutionLvl)"
                 lblEvolution.text = str
             }
         }
